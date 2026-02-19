@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="zh-CN" class="scroll-smooth">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>西湖灵犀 (NEURALICORN) | 中文脑机接口技术</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+      tailwind.config = {
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Inter', 'sans-serif'],
+            },
+            colors: {
+              'neural-black': '#050505',
+              'neural-dark': '#0a0a0a',
+              'neural-gray': '#1f1f1f',
+              'neural-light': '#e5e5e5',
+            },
+            animation: {
+              'fade-in-up': 'fadeInUp 0.8s ease-out forwards',
+            },
+            keyframes: {
+              fadeInUp: {
+                '0%': { opacity: '0', transform: 'translateY(20px)' },
+                '100%': { opacity: '1', transform: 'translateY(0)' },
+              },
+            },
+          },
+        },
+      }
+    </script>
+    <style>
+      body {
+        background-color: #050505;
+        color: #ffffff;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+      /* Custom scrollbar for deep-tech feel */
+      ::-webkit-scrollbar {
+        width: 8px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #050505;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #333;
+        border-radius: 4px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #555;
+      }
+    </style>
+  <script type="importmap">
+{
+  "imports": {
+    "react": "https://esm.sh/react@^19.2.4",
+    "react-dom/": "https://esm.sh/react-dom@^19.2.4/",
+    "react/": "https://esm.sh/react@^19.2.4/",
+    "lucide-react": "https://esm.sh/lucide-react@^0.574.0"
+  }
+}
+</script>
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/index.tsx"></script>
+  </body>
+</html>
