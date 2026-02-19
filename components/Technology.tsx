@@ -51,12 +51,12 @@ const Technology: React.FC = () => {
   }, []);
 
   return (
-    <section id="technology" className="py-24 md:py-32 bg-neural-black scroll-mt-24 relative overflow-hidden">
+    <section id="technology" className="py-16 md:py-24 bg-neural-black scroll-mt-24 relative overflow-hidden">
       {/* Background Grid */}
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
       
       <div className="relative max-w-7xl mx-auto px-6">
-        <div className="mb-20 max-w-2xl">
+        <div className="mb-12 max-w-2xl">
           <div className="flex items-center gap-2 mb-4">
             <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
             <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-neutral-500">{t.technology.sectionTitle}</h2>
@@ -95,7 +95,7 @@ const Technology: React.FC = () => {
         </div>
 
         {/* Stats strip */}
-        <div className="mt-20 border-t border-white/10 pt-10 grid grid-cols-2 md:grid-cols-4 gap-8">
+        <div className="mt-16 border-t border-white/10 pt-10 grid grid-cols-2 md:grid-cols-4 gap-8">
           {[
             { label: 'Channels', value: '1024+' },
             { label: 'Latency', value: '<20ms' },

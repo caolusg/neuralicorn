@@ -11,7 +11,7 @@ const Progress: React.FC = () => {
   ];
 
   return (
-    <section id="progress" className="py-24 md:py-32 bg-neural-black border-t border-white/5 scroll-mt-24">
+    <section id="progress" className="py-16 md:py-24 bg-neural-black border-t border-white/5 scroll-mt-24">
       <div className="max-w-7xl mx-auto px-6 grid md:grid-cols-12 gap-12">
         <div className="md:col-span-4">
           <h2 className="text-3xl font-bold tracking-tight text-white mb-4">{t.progress.title}</h2>

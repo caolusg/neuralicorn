@@ -5,7 +5,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 const Contact: React.FC = () => {
   const { t } = useLanguage();
   return (
-    <section id="contact" className="py-24 bg-neural-black border-t border-white/5 scroll-mt-24">
+    <section id="contact" className="py-16 md:py-24 bg-neural-black border-t border-white/5 scroll-mt-24">
       <div className="max-w-7xl mx-auto px-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end">
           
