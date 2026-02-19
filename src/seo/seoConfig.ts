@@ -36,7 +36,6 @@ export interface SeoPayload {
 
 const SITE_URL = 'https://neuralicorn.com';
 const OG_IMAGE_PATH = '/og.svg';
-const OG_IMAGE_PATH = '/favicon.ico'; // TODO: Replace with a dedicated social share image (e.g. /og.png).
 
 const localeContent: Record<PageKey, Record<Locale, SeoLocaleContent>> = {
   home: {
@@ -57,25 +56,17 @@ const localeContent: Record<PageKey, Record<Locale, SeoLocaleContent>> = {
   },
 };
 
+const isLocale = (locale: string): locale is Locale => locale === 'zh' || locale === 'en';
+
 export const getSeo = (locale: Locale, pageKey: PageKey): SeoPayload => {
-  const selectedLocale: Locale = localeContent[pageKey][locale] ? locale : 'zh';
+  const selectedLocale: Locale = isLocale(locale) ? locale : 'zh';
   const content = localeContent[pageKey][selectedLocale];
 
-  // Query-param locale URLs are used as stable, indexable canonical targets in this SPA.
   const canonical = `${SITE_URL}/?lang=${selectedLocale}`;
   const alternates = {
     zh: `${SITE_URL}/?lang=zh`,
     en: `${SITE_URL}/?lang=en`,
     xDefault: `${SITE_URL}/?lang=zh`,
-  const selectedLocale: Locale = localeContent[pageKey][locale] ? locale : 'en';
-  const content = localeContent[pageKey][selectedLocale];
-
-  // TODO: If localized routes are introduced (e.g. /zh and /en), update canonical/alternate URLs accordingly.
-  const canonical = `${SITE_URL}/`;
-  const alternates = {
-    zh: canonical,
-    en: canonical,
-    xDefault: canonical,
   };
 
   const organizationJsonLd = {
