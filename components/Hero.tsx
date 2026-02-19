@@ -16,8 +16,9 @@ interface Pulse {
 }
 
 const Hero: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language } = useLanguage();
   const canvasRef = useRef<HTMLCanvasElement>(null);
+  const heroContentOffsetClass = language === 'zh' ? 'pb-20 md:pb-28' : '';
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -178,7 +179,7 @@ const Hero: React.FC = () => {
       <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_90%)] opacity-80 z-0 pointer-events-none" />
 
       {/* Content - Centered */}
-      <div className="relative z-10 max-w-6xl mx-auto px-6 text-center pb-16 md:pb-20">
+      <div className={`relative z-10 max-w-6xl mx-auto px-6 text-center pb-16 md:pb-20 ${heroContentOffsetClass}`}>
         <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-white/10 bg-white/5 backdrop-blur-sm text-xs text-neutral-400 mb-8 animate-fade-in-up font-mono uppercase tracking-wider">
           <Activity size={12} className="text-white" />
           <span>Neural Interface v2.0 Live</span>
