@@ -4,7 +4,7 @@ import { useLanguage } from '../contexts/LanguageContext';
 const Problem: React.FC = () => {
   const { t } = useLanguage();
   return (
-    <section id="mission" className="py-16 md:py-24 bg-neural-black relative border-t border-white/5 scroll-mt-24">
+    <section id="mission" className="py-16 md:py-24 relative border-t border-white/5 scroll-mt-24">
       {/* Changed max-w-4xl to max-w-7xl to align with the navbar and page grid */}
       <div className="max-w-7xl mx-auto px-6">
         <div className="grid md:grid-cols-12 gap-12 items-start">

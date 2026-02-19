@@ -9,7 +9,7 @@ interface TechCardProps {
 }
 
 const TechCard: React.FC<TechCardProps> = ({ icon, title, text }) => (
-  <div className="group relative h-full bg-neural-dark border border-white/10 overflow-hidden hover:border-white/20 transition-colors duration-500 rounded-lg">
+  <div className="group relative h-full bg-neural-dark/80 backdrop-blur-sm border border-white/10 overflow-hidden hover:border-white/20 transition-colors duration-500 rounded-lg">
     {/* Glow Effect is handled by parent grid for unified mouse tracking, or we can use local tracking. 
         Here we rely on the group-hover and native CSS glow added in global styles. */}
     <div className="relative z-10 p-8 flex flex-col h-full">
@@ -51,9 +51,9 @@ const Technology: React.FC = () => {
   }, []);
 
   return (
-    <section id="technology" className="py-16 md:py-24 bg-neural-black scroll-mt-24 relative overflow-hidden">
-      {/* Background Grid */}
-      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none" />
+    <section id="technology" className="py-16 md:py-24 scroll-mt-24 relative overflow-hidden">
+      {/* Background Grid - faint overlay on top of neural background */}
+      <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-50" />
       
       <div className="relative max-w-7xl mx-auto px-6">
         <div className="mb-12 max-w-2xl">

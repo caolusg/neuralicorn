@@ -6,14 +6,16 @@ import Technology from './components/Technology';
 import Progress from './components/Progress';
 import Research from './components/Research';
 import Contact from './components/Contact';
+import NeuralBackground from './components/NeuralBackground';
 import { useLanguage } from './contexts/LanguageContext';
 
 const App: React.FC = () => {
   const { t } = useLanguage();
   return (
-    <div className="min-h-screen bg-neural-black text-white selection:bg-white selection:text-black font-sans">
+    <div className="min-h-screen text-white selection:bg-white selection:text-black font-sans relative">
+      <NeuralBackground />
       <Navbar />
-      <main>
+      <main className="relative z-10">
         <Hero />
         <Problem />
         <Technology />
@@ -21,7 +23,7 @@ const App: React.FC = () => {
         <Research />
         <Contact />
       </main>
-      <footer className="py-8 border-t border-white/10 text-center text-xs text-neutral-500">
+      <footer className="relative z-10 py-8 border-t border-white/10 text-center text-xs text-neutral-500 bg-black/40 backdrop-blur-sm">
         <p>&copy; {new Date().getFullYear()} {t.companyName}. {t.footer.rights}</p>
       </footer>
     </div>

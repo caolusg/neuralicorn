@@ -166,16 +166,16 @@ const Hero: React.FC = () => {
   };
 
   return (
-    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden bg-neural-black">
+    <section id="home" className="relative h-screen flex items-center justify-center overflow-hidden">
       {/* Background Animation */}
       <canvas
         ref={canvasRef}
         className="absolute inset-0 z-0 opacity-60 pointer-events-none"
       />
       
-      {/* Vignette & Gradient */}
+      {/* Vignette & Gradient - Modified to blend with global background */}
       <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neural-black/20 to-neural-black z-0 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_100%)] opacity-80 z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_90%)] opacity-80 z-0 pointer-events-none" />
 
       {/* Content - Centered */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 text-center pt-20">

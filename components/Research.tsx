@@ -5,7 +5,7 @@ const Research: React.FC = () => {
   const { t } = useLanguage();
 
   return (
-    <section id="foundation" className="py-16 md:py-24 bg-neural-gray scroll-mt-24">
+    <section id="foundation" className="py-16 md:py-24 bg-black/40 backdrop-blur-md scroll-mt-24 border-y border-white/5">
       <div className="max-w-7xl mx-auto px-6">
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight mb-8 text-white">{t.research.title}</h2>
         <div className="w-16 h-1 bg-white mb-10 opacity-20"></div>
