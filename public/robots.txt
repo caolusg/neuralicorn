@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://neuralicorn.com/sitemap.xml
