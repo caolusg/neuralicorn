@@ -60,6 +60,7 @@ export const getSeo = (locale: Locale, pageKey: PageKey): SeoPayload => {
   const selectedLocale: Locale = localeContent[pageKey][locale] ? locale : 'zh';
   const content = localeContent[pageKey][selectedLocale];
 
+  // Query-param locale URLs are used as stable, indexable canonical targets in this SPA.
   const canonical = `${SITE_URL}/?lang=${selectedLocale}`;
   const alternates = {
     zh: `${SITE_URL}/?lang=zh`,
