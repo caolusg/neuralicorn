@@ -1,5 +1,5 @@
 import React, { useRef, useEffect } from 'react';
-import { Cpu, Brain, Network, Zap } from 'lucide-react';
+import { Cpu, Brain, Network } from 'lucide-react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 interface TechCardProps {

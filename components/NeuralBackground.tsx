@@ -69,7 +69,7 @@ const NeuralBackground: React.FC = () => {
       const neighbors: number[][] = Array(nodeCount).fill(null).map(() => []);
 
       // 1. Update Nodes & Activation
-      nodes.forEach((node, i) => {
+      nodes.forEach((node) => {
         // Physics update
         node.x += node.vx;
         node.y += node.vy;
