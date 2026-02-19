@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext, ReactNode } from 'react';
+import React, { createContext, useState, useContext, ReactNode, useEffect } from 'react';
 
 type Language = 'zh' | 'en';
 
@@ -164,8 +164,35 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
+const getInitialLanguage = (): Language => {
+  if (typeof window === 'undefined') {
+    return 'zh';
+  }
+
+  const langParam = new URLSearchParams(window.location.search).get('lang');
+  return langParam === 'en' || langParam === 'zh' ? langParam : 'zh';
+};
+
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
-  const [language, setLanguage] = useState<Language>('en');
+  const [language, setLanguageState] = useState<Language>(getInitialLanguage);
+
+  const setLanguage = (lang: Language) => {
+    setLanguageState(lang);
+    const url = new URL(window.location.href);
+    url.searchParams.set('lang', lang);
+    window.history.replaceState({}, '', `${url.pathname}?${url.searchParams.toString()}${url.hash}`);
+  };
+
+  useEffect(() => {
+    const langParam = new URLSearchParams(window.location.search).get('lang');
+    if (langParam === 'en' || langParam === 'zh') {
+      setLanguageState(langParam);
+    } else {
+      const url = new URL(window.location.href);
+      url.searchParams.set('lang', 'zh');
+      window.history.replaceState({}, '', `${url.pathname}?${url.searchParams.toString()}${url.hash}`);
+    }
+  }, []);
 
   return (
     <LanguageContext.Provider value={{ language, setLanguage, t: translations[language] }}>

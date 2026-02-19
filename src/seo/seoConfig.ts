@@ -35,6 +35,7 @@ export interface SeoPayload {
 }
 
 const SITE_URL = 'https://neuralicorn.com';
+const OG_IMAGE_PATH = '/og.svg';
 const OG_IMAGE_PATH = '/favicon.ico'; // TODO: Replace with a dedicated social share image (e.g. /og.png).
 
 const localeContent: Record<PageKey, Record<Locale, SeoLocaleContent>> = {
@@ -57,6 +58,15 @@ const localeContent: Record<PageKey, Record<Locale, SeoLocaleContent>> = {
 };
 
 export const getSeo = (locale: Locale, pageKey: PageKey): SeoPayload => {
+  const selectedLocale: Locale = localeContent[pageKey][locale] ? locale : 'zh';
+  const content = localeContent[pageKey][selectedLocale];
+
+  // Query-param locale URLs are used as stable, indexable canonical targets in this SPA.
+  const canonical = `${SITE_URL}/?lang=${selectedLocale}`;
+  const alternates = {
+    zh: `${SITE_URL}/?lang=zh`,
+    en: `${SITE_URL}/?lang=en`,
+    xDefault: `${SITE_URL}/?lang=zh`,
   const selectedLocale: Locale = localeContent[pageKey][locale] ? locale : 'en';
   const content = localeContent[pageKey][selectedLocale];
 

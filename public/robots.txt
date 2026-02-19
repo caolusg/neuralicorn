@@ -1,3 +1,4 @@
 User-agent: *
 Allow: /
 Sitemap: https://neuralicorn.com/sitemap.xml
+Sitemap: https://neuralicorn.com/sitemap.txt
