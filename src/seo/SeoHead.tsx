@@ -49,7 +49,7 @@ const SeoHead = ({ pageKey, locale }: SeoHeadProps) => {
     const seo = getSeo(locale, pageKey);
 
     document.title = seo.title;
-    document.documentElement.lang = locale === 'zh' ? 'zh-CN' : 'en';
+    document.documentElement.lang = locale;
 
     upsertMeta('meta[name="description"]', { name: 'description', content: seo.description });
     upsertMeta('meta[name="keywords"]', { name: 'keywords', content: seo.keywords });
@@ -89,6 +89,11 @@ const SeoHead = ({ pageKey, locale }: SeoHeadProps) => {
     upsertMeta('meta[property="og:image"]', {
       property: 'og:image',
       content: seo.openGraph.image,
+    });
+
+    upsertMeta('meta[property="og:locale"]', {
+      property: 'og:locale',
+      content: seo.openGraph.locale,
     });
 
     upsertMeta('meta[name="twitter:card"]', { name: 'twitter:card', content: seo.twitter.card });
