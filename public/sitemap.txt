@@ -1,2 +1,3 @@
-https://neuralicorn.com/?lang=zh
-https://neuralicorn.com/?lang=en
+https://neuralicorn.com/
+https://neuralicorn.com/en/
+https://neuralicorn.com/zh/

@@ -2,14 +2,14 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://neuralicorn.com/</loc>
-    <lastmod>2026-02-19</lastmod>
+    <lastmod>2026-02-20</lastmod>
   </url>
   <url>
-    <loc>https://neuralicorn.com/?lang=zh</loc>
-    <lastmod>2026-02-19</lastmod>
+    <loc>https://neuralicorn.com/en/</loc>
+    <lastmod>2026-02-20</lastmod>
   </url>
   <url>
-    <loc>https://neuralicorn.com/?lang=en</loc>
-    <lastmod>2026-02-19</lastmod>
+    <loc>https://neuralicorn.com/zh/</loc>
+    <lastmod>2026-02-20</lastmod>
   </url>
 </urlset>
