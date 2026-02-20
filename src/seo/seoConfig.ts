@@ -24,6 +24,7 @@ export interface SeoPayload {
     siteName: string;
     type: 'website';
     image: string;
+    locale: string;
   };
   twitter: {
     card: 'summary_large_image';
@@ -59,14 +60,15 @@ const localeContent: Record<PageKey, Record<Locale, SeoLocaleContent>> = {
 const isLocale = (locale: string): locale is Locale => locale === 'zh' || locale === 'en';
 
 export const getSeo = (locale: Locale, pageKey: PageKey): SeoPayload => {
-  const selectedLocale: Locale = isLocale(locale) ? locale : 'zh';
+  const selectedLocale: Locale = isLocale(locale) ? locale : 'en';
   const content = localeContent[pageKey][selectedLocale];
+  const localePath = selectedLocale === 'zh' ? '/zh/' : '/en/';
 
-  const canonical = `${SITE_URL}/?lang=${selectedLocale}`;
+  const canonical = `${SITE_URL}${localePath}`;
   const alternates = {
-    zh: `${SITE_URL}/?lang=zh`,
-    en: `${SITE_URL}/?lang=en`,
-    xDefault: `${SITE_URL}/?lang=zh`,
+    zh: `${SITE_URL}/zh/`,
+    en: `${SITE_URL}/en/`,
+    xDefault: `${SITE_URL}/en/`,
   };
 
   const organizationJsonLd = {
@@ -141,6 +143,7 @@ export const getSeo = (locale: Locale, pageKey: PageKey): SeoPayload => {
       siteName: 'Neuralicorn',
       type: 'website',
       image: ogImage,
+      locale: selectedLocale === 'zh' ? 'zh_CN' : 'en_US',
     },
     twitter: {
       card: 'summary_large_image',

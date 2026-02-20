@@ -53,6 +53,8 @@ interface Translations {
   };
 }
 
+const STORAGE_KEY = 'neuralicorn-language';
+
 const translations: Record<Language, Translations> = {
   zh: {
     companyName: '西湖灵犀',
@@ -164,13 +166,37 @@ interface LanguageContextType {
 
 const LanguageContext = createContext<LanguageContextType | undefined>(undefined);
 
-const getInitialLanguage = (): Language => {
-  if (typeof window === 'undefined') {
-    return 'zh';
-  }
+const isLanguage = (value: string | null): value is Language => value === 'zh' || value === 'en';
 
-  const langParam = new URLSearchParams(window.location.search).get('lang');
-  return langParam === 'en' || langParam === 'zh' ? langParam : 'zh';
+const getLanguageFromPath = (pathname: string): Language | null => {
+  const segment = pathname.split('/').filter(Boolean)[0] ?? '';
+  return isLanguage(segment) ? segment : null;
+};
+
+const getBrowserLanguage = (): Language => (navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en');
+
+const getInitialLanguage = (): Language => {
+  if (typeof window === 'undefined') return 'en';
+
+  const pathLanguage = getLanguageFromPath(window.location.pathname);
+  if (pathLanguage) return pathLanguage;
+
+  const savedLanguage = localStorage.getItem(STORAGE_KEY);
+  if (isLanguage(savedLanguage)) return savedLanguage;
+
+  const legacyLang = new URLSearchParams(window.location.search).get('lang');
+  if (isLanguage(legacyLang)) return legacyLang;
+
+  return getBrowserLanguage();
+};
+
+const normalizeLanguagePath = (lang: Language, replace = true) => {
+  const url = new URL(window.location.href);
+  const targetPath = `/${lang}/`;
+  if (url.pathname !== targetPath) {
+    const method = replace ? 'replaceState' : 'pushState';
+    window.history[method]({}, '', `${targetPath}${url.hash}`);
+  }
 };
 
 export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
@@ -178,20 +204,31 @@ export const LanguageProvider: React.FC<{ children: ReactNode }> = ({ children }
 
   const setLanguage = (lang: Language) => {
     setLanguageState(lang);
-    const url = new URL(window.location.href);
-    url.searchParams.set('lang', lang);
-    window.history.replaceState({}, '', `${url.pathname}?${url.searchParams.toString()}${url.hash}`);
+    localStorage.setItem(STORAGE_KEY, lang);
+    window.history.pushState({}, '', `/${lang}/`);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   useEffect(() => {
-    const langParam = new URLSearchParams(window.location.search).get('lang');
-    if (langParam === 'en' || langParam === 'zh') {
-      setLanguageState(langParam);
-    } else {
-      const url = new URL(window.location.href);
-      url.searchParams.set('lang', 'zh');
-      window.history.replaceState({}, '', `${url.pathname}?${url.searchParams.toString()}${url.hash}`);
-    }
+    const pathLanguage = getLanguageFromPath(window.location.pathname);
+    const selected = pathLanguage ?? getInitialLanguage();
+
+    setLanguageState(selected);
+    localStorage.setItem(STORAGE_KEY, selected);
+    normalizeLanguagePath(selected, true);
+
+    const handlePopState = () => {
+      const nextLanguage = getLanguageFromPath(window.location.pathname);
+      const fallback = nextLanguage ?? 'en';
+      setLanguageState(fallback);
+      localStorage.setItem(STORAGE_KEY, fallback);
+      if (!nextLanguage) {
+        normalizeLanguagePath(fallback, true);
+      }
+    };
+
+    window.addEventListener('popstate', handlePopState);
+    return () => window.removeEventListener('popstate', handlePopState);
   }, []);
 
   return (
