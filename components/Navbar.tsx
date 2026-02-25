@@ -57,6 +57,8 @@ const Navbar: React.FC = () => {
       element.scrollIntoView({ behavior: 'smooth' });
       window.history.replaceState({}, '', `/${language}/#${id}`);
       setIsMobileMenuOpen(false);
+    } else {
+      window.location.href = `/${language}/#${id}`;
     }
   };
 

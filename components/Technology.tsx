@@ -9,7 +9,7 @@ interface TechCardProps {
 }
 
 const TechCard: React.FC<TechCardProps> = ({ icon, title, text }) => (
-  <div className="group relative h-full bg-neural-dark/80 backdrop-blur-sm border border-white/10 overflow-hidden hover:border-white/20 transition-colors duration-500 rounded-lg">
+  <div className="group relative h-full bg-neural-dark/80 backdrop-blur-sm border border-white/10 overflow-hidden hover:border-white/15 transition-colors duration-500 rounded-2xl">
     {/* Glow Effect is handled by parent grid for unified mouse tracking, or we can use local tracking. 
         Here we rely on the group-hover and native CSS glow added in global styles. */}
     <div className="relative z-10 p-8 flex flex-col h-full">
@@ -28,7 +28,7 @@ const TechCard: React.FC<TechCardProps> = ({ icon, title, text }) => (
 );
 
 const Technology: React.FC = () => {
-  const { t } = useLanguage();
+  const { t, language: lang } = useLanguage();
   const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
@@ -56,42 +56,61 @@ const Technology: React.FC = () => {
       <div className="absolute inset-0 bg-[linear-gradient(to_right,#80808012_1px,transparent_1px),linear-gradient(to_bottom,#80808012_1px,transparent_1px)] bg-[size:24px_24px] pointer-events-none opacity-50" />
       
       <div className="relative max-w-7xl mx-auto px-6">
-        <div className="mb-12 max-w-2xl">
-          <div className="flex items-center gap-2 mb-4">
-            <span className="w-2 h-2 rounded-full bg-white animate-pulse" />
-            <h2 className="text-xs font-mono font-bold uppercase tracking-widest text-neutral-500">{t.technology.sectionTitle}</h2>
+        <div className="mb-12 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
+          <div className="max-w-2xl">
+            <div className="flex items-center gap-2 mb-4">
+              <span className="text-xs uppercase tracking-[0.25em] text-neutral-400 font-mono">
+                {lang === 'zh' ? '02 / 核心技术' : '02 / CORE TECHNOLOGY'}
+              </span>
+            </div>
+            <h3 className="text-4xl md:text-5xl font-bold tracking-tighter text-white mb-6">
+              {t.technology.mainTitle}
+            </h3>
+            <p className="text-neutral-400 font-light">
+              {t.technology.description}
+            </p>
           </div>
-          <h3 className="text-4xl md:text-5xl font-bold tracking-tighter text-white mb-6">
-            {t.technology.mainTitle}
-          </h3>
-          <p className="text-neutral-400 font-light">
-             Our proprietary architecture bridges the gap between biological neural networks and digital computation with unprecedented bandwidth.
-          </p>
+          <a
+            href={`/${lang}/technology`}
+            className="text-sm uppercase tracking-widest text-neutral-400 hover:text-white transition-colors inline-flex items-center gap-2"
+          >
+            {t.cta.overview}
+            <span className="text-xs">&rarr;</span>
+          </a>
         </div>
         
         <div ref={containerRef} className="grid md:grid-cols-3 gap-6 group/grid">
           {/* We wrap cards to apply the radial gradient via style injection in JS */}
-          <div className="group rounded-lg tech-card-glow transition-all duration-300">
+          <a
+            href={`/${lang}/technology/high-density-neural-interface-chip`}
+            className="group rounded-2xl tech-card-glow transition-all duration-300 hover:-translate-y-1"
+          >
             <TechCard
               icon={<Cpu size={32} strokeWidth={1.5} />}
               title={t.technology.card1.title}
               text={t.technology.card1.text}
             />
-          </div>
-          <div className="group rounded-lg tech-card-glow transition-all duration-300">
+          </a>
+          <a
+            href={`/${lang}/technology/mandarin-neural-decoding-model`}
+            className="group rounded-2xl tech-card-glow transition-all duration-300 hover:-translate-y-1"
+          >
             <TechCard
               icon={<Brain size={32} strokeWidth={1.5} />}
               title={t.technology.card2.title}
               text={t.technology.card2.text}
             />
-          </div>
-          <div className="group rounded-lg tech-card-glow transition-all duration-300">
+          </a>
+          <a
+            href={`/${lang}/technology/implantable-bci-system-architecture`}
+            className="group rounded-2xl tech-card-glow transition-all duration-300 hover:-translate-y-1"
+          >
             <TechCard
               icon={<Network size={32} strokeWidth={1.5} />}
               title={t.technology.card3.title}
               text={t.technology.card3.text}
             />
-          </div>
+          </a>
         </div>
 
         {/* Stats strip */}
