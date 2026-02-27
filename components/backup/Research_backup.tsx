@@ -5,7 +5,7 @@ const Research: React.FC = () => {
   const { t, language: lang } = useLanguage();
 
   return (
-    <section id="foundation" className="py-16 md:py-24 bg-black/20 backdrop-blur-sm scroll-mt-24 border-y border-white/5">
+    <section id="foundation" className="py-16 md:py-24 bg-black/40 backdrop-blur-md scroll-mt-24 border-y border-white/5">
       <div className="max-w-7xl mx-auto px-6">
         <span className="text-xs uppercase tracking-[0.25em] text-neutral-400 font-mono">04 / {lang === 'zh' ? '研究基础' : 'FOUNDATION'}</span>
         <h2 className="text-3xl md:text-4xl font-bold tracking-tight mt-4 mb-8 text-white">{t.research.title}</h2>

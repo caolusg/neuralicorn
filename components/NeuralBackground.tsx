@@ -133,75 +133,158 @@ const NeuralBackground: React.FC = () => {
         }
       });
 
-      // 4. Draw Connections
-      ctx.lineWidth = 1;
-      connections.forEach(conn => {
-        const nA = nodes[conn.a];
-        const nB = nodes[conn.b];
-        
-        // Base opacity from distance
-        let opacity = (1 - conn.dist / connectionDistance) * 0.1;
-        
-        // Boost opacity if connected nodes are active
-        const activitySum = nA.activation + nB.activation;
-        if (activitySum > 0) {
-          opacity += activitySum * 0.2;
-          ctx.strokeStyle = `rgba(255, 255, 255, ${Math.min(opacity, 0.8)})`;
-          ctx.lineWidth = 1 + activitySum; // Thicker lines for active connections
-        } else {
-          ctx.strokeStyle = `rgba(255, 255, 255, ${opacity})`;
-          ctx.lineWidth = 1;
-        }
-
-        ctx.beginPath();
-        ctx.moveTo(nA.x, nA.y);
-        ctx.lineTo(nB.x, nB.y);
-        ctx.stroke();
-      });
-
-      // 5. Update & Draw Pulses
-      const survivedPulses: Pulse[] = [];
-      pulses.forEach(p => {
-        const nA = nodes[p.sourceIdx];
-        const nB = nodes[p.targetIdx];
-        
-        // Validate connection still exists (approximate by distance)
-        const dx = nA.x - nB.x;
-        const dy = nA.y - nB.y;
-        const dist = Math.sqrt(dx * dx + dy * dy);
-
-        if (dist > connectionDistance) return; // Drop pulse if connection broke
-
-        p.progress += p.speed;
-        
-        if (p.progress >= 1) {
-          // Pulse arrived! Trigger target node
-          if (nB.refractory <= 0) {
-             nB.activation = 1;
-             nB.refractory = 40;
+        // 4. Draw Connections
+        ctx.lineCap = 'round';
+        connections.forEach(conn => {
+          const nA = nodes[conn.a];
+          const nB = nodes[conn.b];
+          
+          let opacity = (1 - conn.dist / connectionDistance) * 0.15;
+          const activitySum = nA.activation + nB.activation;
+          if (activitySum > 0) {
+            opacity += activitySum * 0.3;
           }
-        } else {
-          survivedPulses.push(p);
-          
-          // Draw Pulse
-          const currX = nA.x + (nB.x - nA.x) * p.progress;
-          const currY = nA.y + (nB.y - nA.y) * p.progress;
 
-          // Pulse size grows with speed/intensity
-          const size = 1.5;
+          // Generate organic path points
+          const segments = 8;
+          const points: {x: number, y: number}[] = [{x: nA.x, y: nA.y}];
           
-          ctx.fillStyle = `rgba(255, 255, 255, ${0.8})`;
+          const dx = nB.x - nA.x;
+          const dy = nB.y - nA.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+          const nx = -dy / dist;
+          const ny = dx / dist;
+
+          for (let i = 1; i < segments; i++) {
+            const t = i / segments;
+            const lx = nA.x + dx * t;
+            const ly = nA.y + dy * t;
+            
+            // Organic wobble using multiple sine waves
+            const seed = conn.a * 3 + conn.b * 7 + i;
+            const wobble = (Math.sin(seed * 0.5) * 0.6 + Math.sin(seed * 1.2) * 0.4) * dist * 0.08;
+            
+            points.push({
+              x: lx + nx * wobble,
+              y: ly + ny * wobble
+            });
+          }
+          points.push({x: nB.x, y: nB.y});
+
+          // Draw the main process (tapered)
           ctx.beginPath();
-          ctx.arc(currX, currY, size, 0, Math.PI * 2);
-          ctx.fill();
+          ctx.moveTo(points[0].x, points[0].y);
+          
+          for (let i = 1; i < points.length; i++) {
+            // Tapering effect: thicker near nodes, thinner in middle
+            const t = i / segments;
+            const taper = 1.5 - Math.sin(t * Math.PI) * 0.8;
+            ctx.lineWidth = taper * (1 + activitySum);
+            ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * (1.2 - taper * 0.2)})`;
+            
+            ctx.lineTo(points[i].x, points[i].y);
+            ctx.stroke();
+            ctx.beginPath();
+            ctx.moveTo(points[i].x, points[i].y);
+          }
 
-          // Pulse Glow
-          ctx.shadowBlur = 6;
-          ctx.shadowColor = "rgba(255, 255, 255, 1)";
-          ctx.fill();
-          ctx.shadowBlur = 0;
-        }
-      });
+          // Add "Dendritic Spines" (small protrusions)
+          if (dist > 40) {
+            for (let i = 1; i < points.length - 1; i++) {
+              const seed = conn.a + conn.b + i;
+              if ((seed % 5) === 0) { // Only some segments
+                const p = points[i];
+                const spineLen = 3 + (seed % 4);
+                const angle = (seed % 10) * Math.PI * 0.2;
+                ctx.lineWidth = 0.5;
+                ctx.strokeStyle = `rgba(255, 255, 255, ${opacity * 0.5})`;
+                ctx.beginPath();
+                ctx.moveTo(p.x, p.y);
+                ctx.lineTo(p.x + Math.cos(angle) * spineLen, p.y + Math.sin(angle) * spineLen);
+                ctx.stroke();
+              }
+            }
+          }
+        });
+
+        // 5. Update & Draw Pulses
+        const survivedPulses: Pulse[] = [];
+        pulses.forEach(p => {
+          const nA = nodes[p.sourceIdx];
+          const nB = nodes[p.targetIdx];
+          
+          const dx = nB.x - nA.x;
+          const dy = nB.y - nA.y;
+          const dist = Math.sqrt(dx * dx + dy * dy);
+
+          if (dist > connectionDistance) return;
+
+          p.progress += p.speed;
+          
+          if (p.progress >= 1) {
+            if (nB.refractory <= 0) {
+               nB.activation = 1;
+               nB.refractory = 40;
+            }
+          } else {
+            survivedPulses.push(p);
+            
+            // Calculate position on organic path
+            const segments = 8;
+            
+            const nx = -dy / dist;
+            const ny = dx / dist;
+
+            // Draw Pulse "Cloud" (a cluster of particles)
+            const particleCount = 6;
+            for (let i = 0; i < particleCount; i++) {
+              // Each particle has a slight offset in progress and lateral position
+              const pOffset = (i / particleCount) * 0.03; // Trail offset
+              const t = Math.max(0, p.progress - pOffset);
+              
+              const sIdx = Math.floor(t * segments);
+              const sT = (t * segments) % 1;
+              
+              const getPt = (idx: number) => {
+                if (idx <= 0) return {x: nA.x, y: nA.y};
+                if (idx >= segments) return {x: nB.x, y: nB.y};
+                const tt = idx / segments;
+                const lx = nA.x + dx * tt;
+                const ly = nA.y + dy * tt;
+                const seed = p.sourceIdx * 3 + p.targetIdx * 7 + idx;
+                const wobble = (Math.sin(seed * 0.5) * 0.6 + Math.sin(seed * 1.2) * 0.4) * dist * 0.08;
+                return { x: lx + nx * wobble, y: ly + ny * wobble };
+              };
+
+              const pt1 = getPt(sIdx);
+              const pt2 = getPt(sIdx + 1);
+
+              // Base position on path
+              let cx = pt1.x + (pt2.x - pt1.x) * sT;
+              let cy = pt1.y + (pt2.y - pt1.y) * sT;
+
+              // Add random cloud jitter
+              const jitterX = (Math.sin(i * 1.5 + Date.now() * 0.01) * 2);
+              const jitterY = (Math.cos(i * 1.5 + Date.now() * 0.01) * 2);
+              
+              const size = 0.8 + Math.random() * 0.8;
+              const alpha = 0.4 + (1 - i / particleCount) * 0.5;
+
+              ctx.fillStyle = `rgba(255, 255, 255, ${alpha})`;
+              ctx.beginPath();
+              ctx.arc(cx + jitterX, cy + jitterY, size, 0, Math.PI * 2);
+              ctx.fill();
+
+              // Only add glow to the head particle
+              if (i === 0) {
+                ctx.shadowBlur = 12;
+                ctx.shadowColor = "rgba(255, 255, 255, 1)";
+                ctx.fill();
+                ctx.shadowBlur = 0;
+              }
+            }
+          }
+        });
       pulses = survivedPulses;
 
       // 6. Draw Nodes (Somas)
@@ -214,7 +297,7 @@ const NeuralBackground: React.FC = () => {
         
         if (node.activation > 0.1) {
           ctx.shadowBlur = 15 * node.activation;
-          ctx.shadowColor = "rgba(255, 255, 255, 0.9)";
+          ctx.shadowColor = `rgba(255, 255, 255, 0.9)`;
         }
 
         ctx.beginPath();

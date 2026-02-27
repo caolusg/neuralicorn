@@ -9,7 +9,7 @@ interface TechCardProps {
 }
 
 const TechCard: React.FC<TechCardProps> = ({ icon, title, text }) => (
-  <div className="group relative h-full bg-neural-dark/40 backdrop-blur-sm border border-white/10 overflow-hidden hover:border-white/15 transition-colors duration-500 rounded-2xl">
+  <div className="group relative h-full bg-neural-dark/80 backdrop-blur-sm border border-white/10 overflow-hidden hover:border-white/15 transition-colors duration-500 rounded-2xl">
     {/* Glow Effect is handled by parent grid for unified mouse tracking, or we can use local tracking. 
         Here we rely on the group-hover and native CSS glow added in global styles. */}
     <div className="relative z-10 p-8 flex flex-col h-full">

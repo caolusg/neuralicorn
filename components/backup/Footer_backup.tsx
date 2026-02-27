@@ -1,4 +1,4 @@
-import React from 'react';
+﻿import React from 'react';
 import { useLanguage } from '../contexts/LanguageContext';
 
 const Footer: React.FC = () => {
@@ -30,7 +30,7 @@ const Footer: React.FC = () => {
   ];
 
   return (
-    <footer className="relative z-10 bg-transparent border-t border-white/5">
+    <footer className="relative z-10 bg-neural-black border-t border-white/5">
       <div className="max-w-7xl mx-auto px-6 py-16 grid grid-cols-1 md:grid-cols-4 gap-12">
         <div>
           <h4 className="text-white font-bold tracking-widest text-sm uppercase mb-4">{t.companyName}</h4>
