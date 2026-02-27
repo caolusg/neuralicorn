@@ -175,8 +175,8 @@ const Hero: React.FC = () => {
       />
       
       {/* Vignette & Gradient - Modified to blend with global background */}
-      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neural-black/10 to-transparent z-0 pointer-events-none" />
-      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(5,5,5,0.4)_90%)] opacity-80 z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-gradient-to-b from-transparent via-neural-black/20 to-neural-black z-0 pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,#050505_90%)] opacity-80 z-0 pointer-events-none" />
 
       {/* Content - Centered */}
       <div className={`relative z-10 max-w-6xl mx-auto px-6 text-center pb-16 md:pb-20 ${heroContentOffsetClass}`}>
